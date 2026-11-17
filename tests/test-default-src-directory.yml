@@ -1,0 +1,26 @@
+name: Test default srcDirectory lints whole repo
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Remove any leftover invalid protos from other tests
+        run: |
+          rm -rf "$GITHUB_WORKSPACE/tmp-protolint-invalid"
+          find "$GITHUB_WORKSPACE" -name '*.proto' -not -path '*/.git/*'
+      - id: action
+        uses: .
+        with:
+          configDirectory: tests/fixtures/valid
+      - name: Assert lint succeeded
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" != "success" ]; then
+            echo "FAIL: expected success"
+            exit 1
+          fi
+          echo "PASS"
