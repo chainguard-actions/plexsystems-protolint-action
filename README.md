@@ -1,14 +1,31 @@
-# plexsystems/protolint-action
+# protolint-action
 
-A tool to enforce Protocol Buffer style and conventions
+![Build Status](https://github.com/plexsystems/protolint-action/workflows/build-test/badge.svg)
 
-Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/plexsystems/protolint-action](https://github.com/plexsystems/protolint-action).
+A GitHub Action for using [protolint](https://github.com/yoheimuta/protolint) in your [GitHub Action](https://github.com/features/actions) workflows.
 
-## Versions
+## Required inputs
 
-| Version | Tag | Upstream commit | Hardening report |
-|---------|-----|-----------------|------------------|
-| v0.7.0 | [`v0.7.0`](https://github.com/chainguard-actions/plexsystems-protolint-action/tree/v0.7.0) | [`7838989`](https://github.com/plexsystems/protolint-action/commit/7838989df3edefc91ea9370aadd5225e6bb73836) | [`HARDENING.md`](https://github.com/chainguard-actions/plexsystems-protolint-action/blob/v0.7.0/HARDENING.md) |
+- `configDirectory`: the path to where the `.protolint.yaml` configuration exists.
+
+## Example
+
+```yaml
+name: "lint protobuf"
+on: pull_request
+
+jobs:
+  pr-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v1
+
+      - name: run protolint
+        uses: plexsystems/protolint-action@v0.4.0
+        with:
+          configDirectory: test
+```
 
 ## Privacy
 
